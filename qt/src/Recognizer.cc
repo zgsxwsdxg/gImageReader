@@ -37,6 +37,10 @@
 Recognizer::Recognizer(const UI_MainWindow& _ui) :
 	ui(_ui)
 {
+	m_langMenuRadioGroup = nullptr;
+	m_langMenuCheckGroup = nullptr;
+	m_multilingualAction = nullptr;
+	
 	QAction* currentPageAction = new QAction(_("Current Page"), this);
 	currentPageAction->setData(static_cast<int>(PageSelection::Current));
 

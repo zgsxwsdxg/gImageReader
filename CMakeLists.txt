@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.11)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.0)
 LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 INCLUDE(GSettings)
 SET(ENV{LC_ALL} "C")
@@ -38,7 +38,7 @@ ADD_DEFINITIONS(-DPACKAGE_REVISION=\"${PACKAGE_REVISION}\")
 ADD_DEFINITIONS(-DGETTEXT_PACKAGE=\"${CMAKE_PROJECT_NAME}\")
 ADD_DEFINITIONS(-DENABLE_VERSIONCHECK=${ENABLE_VERSIONCHECK})
 ADD_DEFINITIONS(-DMANUAL_DIR=\"${MANUAL_DIR}\")
-ADD_DEFINITIONS(-std=c++11)
+ADD_DEFINITIONS(-std=c++0x)
 
 # Dependencies
 FIND_PACKAGE(Gettext REQUIRED)
@@ -74,15 +74,15 @@ IF("${INTERFACE_TYPE}" STREQUAL "gtk")
     )
     SET(srcdir "gtk")
 ELSEIF("${INTERFACE_TYPE}" STREQUAL "qt4")
-    SET(CMAKE_AUTOMOC ON)
-    FIND_PACKAGE(Qt4 REQUIRED)
+    FIND_PACKAGE(Qt4 REQUIRED QtCore QtGui QtNetwork QtDBus)
+    INCLUDE(${QT_USE_FILE})
+    ADD_DEFINITIONS(${QT_DEFINITIONS})
     PKG_CHECK_MODULES(QTSPELL REQUIRED QtSpell-qt4)
     PKG_CHECK_MODULES(POPPLER REQUIRED poppler-qt4)
     INCLUDE_DIRECTORIES(${QTSPELL_INCLUDE_DIRS} ${POPPLER_INCLUDE_DIRS})
-    SET(gimagereader_LIBS ${QTSPELL_LDFLAGS} ${POPPLER_LDFLAGS})
+    SET(gimagereader_LIBS ${QTSPELL_LDFLAGS} ${POPPLER_LDFLAGS} ${QT_LIBRARIES})
     SET(srcdir "qt")
 ELSEIF("${INTERFACE_TYPE}" STREQUAL "qt5")
-    SET(CMAKE_AUTOMOC ON)
     FIND_PACKAGE(Qt5Widgets REQUIRED)
     PKG_CHECK_MODULES(QTSPELL REQUIRED QtSpell-qt5)
     PKG_CHECK_MODULES(POPPLER REQUIRED poppler-qt5)
@@ -101,7 +101,22 @@ ENDIF()
 
 # Files
 FILE(GLOB gimagereader_SRCS ${srcdir}/src/*.cc)
-FILE(GLOB gimagereader_HDRS ${srcdir}/src/*.hh)
+FILE(GLOB gimagereader_HDRS ${srcdir}/src/common.hh
+                            ${srcdir}/src/DisplayRenderer.hh
+                            ${srcdir}/src/Ui_MainWindow.hh
+                            ${srcdir}/src/Utils.hh)
+FILE(GLOB gimagereader_MOC_HDRS ${srcdir}/src/Acquirer.hh
+                                ${srcdir}/src/Config.hh
+                                ${srcdir}/src/ConfigSettings.hh
+                                ${srcdir}/src/CrashHandler.hh
+                                ${srcdir}/src/Displayer.hh
+                                ${srcdir}/src/DisplaySelection.hh
+                                ${srcdir}/src/MainWindow.hh
+                                ${srcdir}/src/OutputManager.hh
+                                ${srcdir}/src/Recognizer.hh
+                                ${srcdir}/src/Scanner.hh
+                                ${srcdir}/src/SourceManager.hh
+                                ${srcdir}/src/SubstitutionsManager.hh)
 FILE(GLOB gimagereader_FORMS ${srcdir}/data/*.ui)
 FILE(GLOB gimagereader_ICONS data/icons/*.png)
 FILE(GLOB gimagereader_PO po/*.po)
@@ -110,10 +125,10 @@ IF("${srcdir}" STREQUAL "qt")
 ENDIF()
 IF(UNIX)
     LIST(APPEND gimagereader_SRCS ${srcdir}/src/scanner/ScannerSane.cc)
-    LIST(APPEND gimagereader_HDRS ${srcdir}/src/scanner/ScannerSane.hh)
+    LIST(APPEND gimagereader_MOC_HDRS ${srcdir}/src/scanner/ScannerSane.hh)
 ELSE(UNIX)
     LIST(APPEND gimagereader_SRCS ${srcdir}/src/scanner/ScannerTwain.cc)
-    LIST(APPEND gimagereader_HDRS ${srcdir}/src/scanner/ScannerTwain.hh)
+    LIST(APPEND gimagereader_MOC_HDRS ${srcdir}/src/scanner/ScannerTwain.hh)
 ENDIF(UNIX)
 
 
@@ -131,6 +146,7 @@ IF("${srcdir}" STREQUAL "gtk")
 ELSEIF("${INTERFACE_TYPE}" STREQUAL "qt4")
     QT4_WRAP_UI(gimagereader_FORMS_HEADERS ${gimagereader_FORMS})
     QT4_ADD_RESOURCES(gimagereader_RESOURCES_RCC ${gimagereader_RESOURCES})
+    QT4_WRAP_CPP(gimagereader_MOC_SRCS  ${gimagereader_MOC_HDRS})
 ELSEIF("${INTERFACE_TYPE}" STREQUAL "qt5")
     QT5_WRAP_UI(gimagereader_FORMS_HEADERS ${gimagereader_FORMS})
     QT5_ADD_RESOURCES(gimagereader_RESOURCES_RCC ${gimagereader_RESOURCES})
@@ -170,6 +186,8 @@ ENDIF()
 ADD_EXECUTABLE(gimagereader
     ${gimagereader_HDRS}
     ${gimagereader_SRCS}
+    ${gimagereader_MOC_HDRS}
+    ${gimagereader_MOC_SRCS}
     ${gimagereader_FORMS_HEADERS}
     ${gimagereader_RESOURCES_RCC}
 )
@@ -183,7 +201,6 @@ TARGET_LINK_LIBRARIES(gimagereader
 SET_TARGET_PROPERTIES(gimagereader PROPERTIES COMPILE_FLAGS "-fopenmp")
 SET_TARGET_PROPERTIES(gimagereader PROPERTIES OUTPUT_NAME gimagereader-${INTERFACE_TYPE})
 IF("${INTERFACE_TYPE}" STREQUAL "qt4")
-    QT4_USE_MODULES(gimagereader Core Gui Network DBus)
     ADD_DEPENDENCIES(gimagereader gettextizeui)
 ELSEIF("${INTERFACE_TYPE}" STREQUAL "qt5")
     QT5_USE_MODULES(gimagereader Widgets Network DBus)

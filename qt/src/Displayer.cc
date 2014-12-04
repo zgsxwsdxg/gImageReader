@@ -37,6 +37,13 @@
 Displayer::Displayer(const UI_MainWindow& _ui, QWidget* parent)
 	: QGraphicsView(parent), ui(_ui), m_scaleThread(std::bind(&Displayer::scaleThread, this))
 {
+	m_source = nullptr;
+	m_renderer = nullptr;
+	m_imageItem = nullptr;
+	m_scale = 1.0;
+	
+	m_curSel = nullptr;
+	
 	setScene(&m_scene);
 	setBackgroundBrush(Qt::gray);
 	setRenderHint(QPainter::Antialiasing);

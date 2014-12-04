@@ -42,17 +42,17 @@ public:
 
 private:
 	struct ScanJob {
-		ScanJob(const Params& _params) : params(_params) {}
+		ScanJob(const Params& _params) : params(_params), handle(nullptr), nUsed(0), lineCount(0), height(0), rowstride(0), pageNumber(0) {}
 		Params params;
-		SANE_Handle handle = nullptr;
+		SANE_Handle handle;
 		SANE_Parameters parameters;
 		QVector<uint8_t> lineBuffer;
 		QVector<uint8_t> imgbuf;
-		int nUsed = 0;		// Number of used bytes in the line buffer
-		int lineCount = 0;	// Number of read lines
-		int height = 0;
-		int rowstride = 0;
-		int pageNumber = 0;
+		int nUsed;		// Number of used bytes in the line buffer
+		int lineCount;	// Number of read lines
+		int height;
+		int rowstride;
+		int pageNumber;
 	};
 
 	struct Request {
@@ -61,9 +61,9 @@ private:
 	};
 
 	QThread m_thread;
-	State m_state = State::IDLE;
+	State m_state;
 	Utils::AsyncQueue<Request> m_requestQueue;
-	ScanJob* m_job = nullptr;
+	ScanJob* m_job;
 
 	void doRedetect();
 	void doOpen();

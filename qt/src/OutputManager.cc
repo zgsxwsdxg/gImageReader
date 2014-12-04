@@ -34,6 +34,8 @@
 OutputManager::OutputManager(const UI_MainWindow& _ui)
 	: ui(_ui)
 {
+    m_dbusIface = nullptr;
+    m_notifierHandle = nullptr;
 	m_substitutionsManager = new SubstitutionsManager(ui.plainTextEditOutput, ui.checkBoxOutputSearchMatchCase, ui.dockWidgetOutput);
 
 	m_insertMode = InsertMode::Append;

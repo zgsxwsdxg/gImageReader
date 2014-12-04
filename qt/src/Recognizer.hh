@@ -53,9 +53,9 @@ private:
 	QDialog* m_pagesDialog;
 	QLineEdit* m_pagesLineEdit;
 	QComboBox* m_pageAreaComboBox;
-	QActionGroup* m_langMenuRadioGroup = nullptr;
-	QActionGroup* m_langMenuCheckGroup = nullptr;
-	QAction* m_multilingualAction = nullptr;
+	QActionGroup* m_langMenuRadioGroup;
+	QActionGroup* m_langMenuCheckGroup;
+	QAction* m_multilingualAction;
 	QString m_modeLabel;
 	QString m_langLabel;
 	Config::Lang m_curLang;

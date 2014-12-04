@@ -20,6 +20,7 @@
 #ifndef CRASHHANDLER_HH
 #define CRASHHANDLER_HH
 
+#include "common.hh"
 #include "ui_CrashHandler.h"
 #include <QProcess>
 
@@ -34,7 +35,7 @@ private:
 	Ui::CrashHandler ui;
 	int m_pid;
 	QProcess m_gdbProcess;
-	QPushButton* m_refreshButton = nullptr;
+	QPushButton* m_refreshButton;
 
 	void closeEvent(QCloseEvent *);
 

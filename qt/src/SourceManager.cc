@@ -37,6 +37,9 @@ Q_DECLARE_METATYPE(Source*)
 SourceManager::SourceManager(const UI_MainWindow& _ui)
 	: ui(_ui)
 {
+	m_screenshotCount = 0;
+	m_pasteCount = 0;
+	
 	m_recentMenu = new QMenu(MAIN);
 	ui.actionSourceRecent->setMenu(m_recentMenu);
 

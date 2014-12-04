@@ -61,14 +61,14 @@ private:
 	enum class Zoom { In, Out, Fit, Original };
 	const UI_MainWindow& ui;
 	QGraphicsScene m_scene;
-	Source* m_source = nullptr;
-	DisplayRenderer* m_renderer = nullptr;
+	Source* m_source;
+	DisplayRenderer* m_renderer;
 	QPixmap m_pixmap;
-	QGraphicsPixmapItem* m_imageItem = nullptr;
-	double m_scale = 1.0;
+	QGraphicsPixmapItem* m_imageItem;
+	double m_scale;
 	QTimer m_renderTimer;
 
-	DisplaySelection* m_curSel = nullptr;
+	DisplaySelection* m_curSel;
 	QList<DisplaySelection*> m_selections;
 
 	void mousePressEvent(QMouseEvent *event);

@@ -47,11 +47,11 @@ public slots:
 private:
 	enum class InsertMode { Append, Cursor, Replace };
 
-	QDBusInterface* m_dbusIface = nullptr;
+	QDBusInterface* m_dbusIface;
 	const UI_MainWindow& ui;
 	InsertMode m_insertMode;
 	QtSpell::TextEditChecker m_spell;
-	MainWindow::Notification m_notifierHandle = nullptr;
+	MainWindow::Notification m_notifierHandle;
 	SubstitutionsManager* m_substitutionsManager;
 
 	void findReplace(bool backwards, bool replace);

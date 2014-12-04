@@ -31,16 +31,16 @@ class UI_MainWindow;
 
 struct Source {
 	Source(const QString& _path, const QString& _displayname, bool _isTemp = false)
-		: path(_path), displayname(_displayname), isTemp(_isTemp) {}
+		: path(_path), displayname(_displayname), isTemp(_isTemp), brightness(0), contrast(0), resolution(-1), page(1), angle(0.), invert(false) {}
 	QString path;
 	QString displayname;
 	bool isTemp;
-	int brightness = 0;
-	int contrast = 0;
-	int resolution = -1;
-	int page = 1;
-	double angle = 0.;
-	bool invert = false;
+	int brightness;
+	int contrast;
+	int resolution;
+	int page;
+	double angle;
+	bool invert;
 };
 
 class SourceManager : public QObject {
@@ -63,8 +63,8 @@ private:
 	QMenu* m_recentMenu;
 	QFileSystemWatcher m_fsWatcher;
 
-	int m_screenshotCount = 0;
-	int m_pasteCount = 0;
+	int m_screenshotCount;
+	int m_pasteCount;
 
 	void savePixmap(const QPixmap& pixmap, const QString& displayname);
 	void selectionChanged();

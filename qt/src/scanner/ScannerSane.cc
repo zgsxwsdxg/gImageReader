@@ -31,6 +31,8 @@
 
 void ScannerSane::init()
 {
+    m_state = State::IDLE;
+    m_job = nullptr;
 	moveToThread(&m_thread);
 	connect(&m_thread, SIGNAL(started()), this, SLOT(run()));
 	m_thread.start();
