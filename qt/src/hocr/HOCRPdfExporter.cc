@@ -337,6 +337,7 @@ HOCRPdfExporter::HOCRPdfExporter(const HOCRDocument* hocrdocument, const HOCRPag
 	connect(ui.toolButtonLandscape, SIGNAL(toggled(bool)), this, SLOT(paperSizeChanged()));
 	connect(ui.lineEditPaperWidth, SIGNAL(textChanged(QString)), this, SLOT(updateValid()));
 	connect(ui.lineEditPaperHeight, SIGNAL(textChanged(QString)), this, SLOT(updateValid()));
+	connect(ui.pushButtonImportAddInfo, SIGNAL(clicked(bool)), this, SLOT(addInfoChanged()));
 
 	ADD_SETTING(ComboSetting("pdfexportmode", ui.comboBoxOutputMode));
 	ADD_SETTING(SpinSetting("pdfimagecompressionquality", ui.spinBoxCompressionQuality, 90));
@@ -774,4 +775,14 @@ void HOCRPdfExporter::updateValid() {
 		}
 	}
 	ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(valid);
+}
+
+void HOCRPdfExporter::addInfoChanged() {
+	auto source = MAIN->getSourceManager()->getSelectedSources().first();
+	ui.lineEditAuthor->setText(source->author);
+	ui.lineEditCreator->setText(source->creator);
+	ui.lineEditKeywords->setText(source->keywords);
+	ui.lineEditTitle->setText(source->title);
+	ui.lineEditSubject->setText(source->subject);
+	ui.lineEditProducer->setText(source->producer);
 }
