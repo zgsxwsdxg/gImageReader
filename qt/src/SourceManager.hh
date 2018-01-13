@@ -42,6 +42,9 @@ struct Source {
 	int page = 1;
 	QVector<double> angle;
 	bool invert = false;
+
+	//Additional info from original file
+	QString author, title, creator, producer, keywords, subject;
 };
 
 class SourceManager : public QObject {
