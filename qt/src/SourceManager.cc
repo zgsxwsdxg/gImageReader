@@ -118,6 +118,7 @@ int SourceManager::addSources(const QStringList& files) {
 		}
 
 		Source* source = new Source(filename, QFileInfo(filename).fileName(), password);
+		extractAdditionalInfo(filename, source);
 		item = new QListWidgetItem(QFileInfo(filename).fileName(), ui.listWidgetSources);
 		item->setToolTip(filename);
 		item->setData(Qt::UserRole, QVariant::fromValue(source));
@@ -182,6 +183,20 @@ bool SourceManager::checkTextLayer(const QString& filename) const {
 		}
 	}
 	return true;
+}
+
+void SourceManager::extractAdditionalInfo(const QString& filename, Source* source) const {
+	if(filename.endsWith(".pdf", Qt::CaseInsensitive)) {
+		std::unique_ptr<Poppler::Document> document(Poppler::Document::load(filename));
+		if(document) {
+			source->author = document->author();
+			source->creator = document->creator();
+			source->keywords = document->keywords();
+			source->producer = document->producer();
+			source->title = document->title();
+			source->subject = document->subject();
+		}
+	}
 }
 
 QList<Source*> SourceManager::getSelectedSources() const {

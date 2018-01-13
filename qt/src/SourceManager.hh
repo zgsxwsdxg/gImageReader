@@ -76,6 +76,7 @@ private:
 
 	bool querySourcePassword(const QString& filename, QByteArray& password) const;
 	bool checkTextLayer(const QString& filename) const;
+	void extractAdditionalInfo(const QString& filename, Source* source) const;
 	void savePixmap(const QPixmap& pixmap, const QString& displayname);
 	void selectionChanged();
 	bool eventFilter(QObject* object, QEvent* event) override;
