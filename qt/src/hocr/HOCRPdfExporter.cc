@@ -360,11 +360,8 @@ HOCRPdfExporter::HOCRPdfExporter(const HOCRDocument* hocrdocument, const HOCRPag
 	ADD_SETTING(ComboSetting("pdfexportpapersizeunit", ui.comboBoxPaperSize));
 	ADD_SETTING(SwitchSetting("pdfexportpaperlandscape", ui.toolButtonLandscape));
 	ADD_SETTING(LineEditSetting("pdfexportinfoauthor", ui.lineEditAuthor, PACKAGE_NAME));
-	ADD_SETTING(LineEditSetting("pdfexportinfotitle", ui.lineEditTitle));
-	ADD_SETTING(LineEditSetting("pdfexportinfosubject", ui.lineEditSubject));
 	ADD_SETTING(LineEditSetting("pdfexportinfoproducer", ui.lineEditProducer, PACKAGE_NAME));
 	ADD_SETTING(LineEditSetting("pdfexportinfocreator", ui.lineEditCreator, PACKAGE_NAME));
-	ADD_SETTING(LineEditSetting("pdfexportinfokeywords", ui.lineEditKeywords));
 
 #ifndef MAKE_VERSION
 #define MAKE_VERSION(...) 0
